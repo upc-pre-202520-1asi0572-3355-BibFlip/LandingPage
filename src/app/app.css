@@ -97,6 +97,11 @@ h3 { font-weight: 600; }
   font-weight: 600;
   font-size: 1.02rem;
   transition: color .2s, opacity .2s;
+  /* Evitar que las palabras se corten en mobile */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: none;
 }
 .nav-links a:hover, .nav-links a.active {
   background: transparent;
@@ -439,7 +444,7 @@ h3 { font-weight: 600; }
   .nav-links { display: none; }
   .site-header.menu-open .nav-links {
     display: flex !important;
-    position: absolute;
+    position: absolute; /* ahora relativo al header (ancho completo) */
     top: 100%;
     left: 0;
     right: 0;
@@ -451,9 +456,13 @@ h3 { font-weight: 600; }
     box-shadow: 0 8px 24px rgba(0,0,0,.2);
     z-index: 1001;
   }
-  .site-header.menu-open .nav-links a { padding: .6rem .75rem !important; }
-  /* Ajuste de la marca para que no se comprima */
+  .site-header.menu-open .nav-links a { display: block; padding: .6rem .75rem !important; }
   .brand-text { font-size: clamp(1.1rem, 1.5vw + 0.9rem, 1.35rem); }
+}
+
+/* Safe area para notch en iOS/Android */
+@supports(padding: max(0px)) {
+  .site-header { padding-top: max(0.5rem, env(safe-area-inset-top)); }
 }
 @media (max-width: 800px) {
   .team { grid-template-columns: 1fr; gap: 0.7rem; }
@@ -573,14 +582,16 @@ p { text-align: justify; text-justify: inter-word; }
   padding: .25rem .5rem;
   border-radius: .5rem;
 }
-.site-header .nav { position: relative; }
+/* Importante: que el menú desplegado se posicione contra el header (ancho completo) */
+.site-header { position: sticky; }
+.site-header .nav { position: static; }
 
 @media (max-width: 960px) {
   .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
   .nav-links { display: none; }
   .site-header.menu-open .nav-links {
     display: flex !important;
-    position: absolute;
+    position: absolute; /* ahora relativo al header (ancho completo) */
     top: 100%;
     left: 0;
     right: 0;
@@ -592,8 +603,7 @@ p { text-align: justify; text-justify: inter-word; }
     box-shadow: 0 8px 24px rgba(0,0,0,.2);
     z-index: 1001;
   }
-  .site-header.menu-open .nav-links a { padding: .6rem .75rem !important; }
-  /* Ajuste de la marca para que no se comprima */
+  .site-header.menu-open .nav-links a { display: block; padding: .6rem .75rem !important; }
   .brand-text { font-size: clamp(1.1rem, 1.5vw + 0.9rem, 1.35rem); }
 }
 
