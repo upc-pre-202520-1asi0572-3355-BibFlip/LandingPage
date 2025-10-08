@@ -251,6 +251,8 @@ h3 { font-weight: 600; }
   color: #443020 !important;
   border-radius: 28px !important;
   box-shadow: 0 10px 28px rgba(60, 35, 18, 0.12);
+  /* Evita que las tarjetas y sus sombras se "salgan" visualmente del borde redondeado */
+  overflow: hidden;
 }
 .how .lead { color: #eadccf; }
 .steps {
@@ -441,7 +443,7 @@ h3 { font-weight: 600; }
   .team { grid-template-columns: repeat(2, 1fr); }
   /* Aumentamos el breakpoint a 960px para que el menú se vuelva hamburguesa antes de que se comprima */
   .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
-  .nav-links { display: none; }
+  .nav-links { display: none !important; }
   .site-header.menu-open .nav-links {
     display: flex !important;
     position: absolute; /* ahora relativo al header (ancho completo) */
@@ -458,6 +460,16 @@ h3 { font-weight: 600; }
   }
   .site-header.menu-open .nav-links a { display: block; padding: .6rem .75rem !important; }
   .brand-text { font-size: clamp(1.1rem, 1.5vw + 0.9rem, 1.35rem); }
+}
+
+@media (max-width: 960px) {
+  /* Grid de pasos a una columna para evitar desbordes */
+  .steps { grid-template-columns: 1fr !important; }
+  /* Padding lateral en móvil para que el contenido no pegue contra el borde */
+  .how .container { padding-left: 1rem; padding-right: 1rem; }
+  .container { padding-left: 1rem; padding-right: 1rem; }
+  /* Asegurar que cada tarjeta ocupe el ancho disponible sin forzar desborde */
+  .step { width: 100%; max-width: 100%; }
 }
 
 /* Safe area para notch en iOS/Android */
@@ -588,7 +600,7 @@ p { text-align: justify; text-justify: inter-word; }
 
 @media (max-width: 960px) {
   .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
-  .nav-links { display: none; }
+  .nav-links { display: none !important; }
   .site-header.menu-open .nav-links {
     display: flex !important;
     position: absolute; /* ahora relativo al header (ancho completo) */
