@@ -619,7 +619,7 @@ p { text-align: justify; text-justify: inter-word; }
   .brand-text { font-size: clamp(1.1rem, 1.5vw + 0.9rem, 1.35rem); }
 }
 
-/* Ajustes de tipografía en móviles */
+/* Ajustes de tipografía móviles */
 @media (max-width: 520px) {
   .hero .container { padding: 3rem 1rem !important; }
   .hero h1 { font-size: clamp(1.4rem, 4.5vw + 0.8rem, 2rem); }
