@@ -8,6 +8,8 @@ import { Component, OnDestroy, AfterViewInit } from '@angular/core';
   styleUrl: './app.css'
 })
 export class App implements AfterViewInit, OnDestroy {
+  menuOpen = false;
+
   testimonios = [
     { texto: 'Ahora puedo ver qué cubículos están disponibles antes de llegar a la biblioteca. Me ahorra mucho tiempo.', autor: 'Valeria Salazar, Estudiante de Ingeniería, UPC San Miguel', img: 'testimonios/testimonio-h-1.jpg' },
     { texto: 'El sistema facilita mi trabajo, ya no tengo que verificar manualmente la ocupación de los cubículos.', autor: 'Carlos Ramos, Estudiante de Negocios, UPC Monterrico', img: 'testimonios/testimonio-h-2.jpg' },
@@ -25,6 +27,8 @@ export class App implements AfterViewInit, OnDestroy {
   private heroImages: string[] = ['cub-1.jpg', 'cub-2.jpg', 'cub-3.jpg'];
   private heroIndex = 0;
   private heroInterval?: any;
+
+  toggleMenu() { this.menuOpen = !this.menuOpen; }
 
   ngAfterViewInit(): void {
     this.updateTestimonioDOM();
@@ -164,6 +168,7 @@ export class App implements AfterViewInit, OnDestroy {
 
   onNavClick(event: Event, sectionId: string) {
     event.preventDefault();
+    this.menuOpen = false;
     const target = document.getElementById(sectionId);
     if (!target) return;
     const header = document.querySelector<HTMLElement>('header.site-header');

@@ -1,9 +1,10 @@
-<header class="site-header">
+<header class="site-header" [class.menu-open]="menuOpen">
   <nav class="container nav d-flex align-items-center justify-content-between">
     <a class="brand d-flex align-items-center gap-2" href="#inicio" aria-label="Bibflip - Inicio">
       <img class="brand-logo" src="bib-flip-logo.svg" alt="Bibflip" />
       <span class="brand-text fs-2 fw-bold">Bibflip</span>
     </a>
+    <button type="button" class="nav-toggle" aria-label="Abrir menú" [attr.aria-expanded]="menuOpen" (click)="toggleMenu()">☰</button>
     <ul class="nav-links d-flex gap-3 list-unstyled mb-0">
       <li><a href="#que-es" class="fs-5 px-2" (click)="onNavClick($event, 'que-es')">¿Qué es?</a></li>
       <li><a href="#caracteristicas" class="fs-5 px-2" (click)="onNavClick($event, 'caracteristicas')">Características</a></li>
