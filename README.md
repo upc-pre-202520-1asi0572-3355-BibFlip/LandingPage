@@ -1,59 +1,79 @@
-# BibflipLanding
+# Bibflip — Landing Page
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
+Landing page simple para presentar Bibflip, una solución para reservar y monitorear cubículos de estudio en tiempo real.
 
-## Development server
+## Características
+- Secciones: Hero, ¿Qué es?, Características, Cómo usar, Testimonios, Sobre nosotros y Footer.
+- Diseño responsive con tipografías web y Bootstrap.
+- Animaciones suaves y componentes accesibles.
+- Código en Angular standalone + estilos CSS.
 
-To start a local development server, run:
+## Demo / Preview
+- Desarrollo local: http://localhost:4200/
+- Producción (GitHub Pages, tras el primer deploy): https://upc-pre-202520-1asi0572-3355-BibFlip.github.io/LandingPage/
 
-```bash
-ng serve
+## Stack técnico
+- Angular 20
+- Bootstrap 5 (solo CSS)
+- CSS personalizado
+
+## Requisitos
+- Node.js 20 o 22 (LTS)
+- npm 9+
+
+## Puesta en marcha (Windows)
+1) Instalar dependencias:
+
+```cmd
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+2) Ejecutar en desarrollo:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```cmd
+npm run start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3) Abrir en el navegador:
+- URL: http://localhost:4200/
 
-```bash
-ng generate --help
+Los cambios en el código recargan la página automáticamente.
+
+## Build de producción
+Genera los artefactos optimizados en la carpeta `dist/`:
+
+```cmd
+npm run build
 ```
 
-## Building
+## Scripts disponibles
+- `npm run start`: inicia el servidor de desarrollo.
+- `npm run build`: compila la app para producción.
+- `npm run watch`: compila en modo watch (desarrollo).
 
-To build the project run:
+## Estructura del proyecto (resumen)
+- `src/` código fuente de la landing
+  - `app/` componentes, HTML y estilos específicos
+  - `index.html` documento base
+  - `styles.css` estilos globales
+- `public/` recursos estáticos (imágenes, íconos, etc.)
+- `package.json` scripts y dependencias
 
-```bash
-ng build
-```
+## Despliegue (GitHub Pages con Actions)
+Este repositorio incluye un flujo en `.github/workflows/deploy.yml` que construye y publica automáticamente al hacer push a `main`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Pasos:
+1) En GitHub, ve a Settings > Pages y asegúrate de que “Source” esté en “GitHub Actions”.
+2) Haz push a `main`. El workflow compilará con el `base-href` adecuado y desplegará la carpeta `dist/` a Pages.
+3) Espera a que el job “Deploy to GitHub Pages” finalice. La página quedará disponible en:
+   - https://upc-pre-202520-1asi0572-3355-BibFlip.github.io/LandingPage/
 
-## Running unit tests
+Notas:
+- Las rutas de imágenes y assets están configuradas en relativo para funcionar bajo `/LandingPage/`.
+- Si cambias el nombre del repositorio, la URL también cambiará; el workflow ajusta automáticamente el `base-href`.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Contribuciones
+Sugerencias y mejoras son bienvenidas. Abre un issue o un PR con tu propuesta.
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Licencia
+Este proyecto se usa con fines académicos. Define una licencia antes de publicación en producción (por ejemplo, MIT).

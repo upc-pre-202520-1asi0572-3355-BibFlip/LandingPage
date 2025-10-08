@@ -1,0 +1,80 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compute repo name
+        id: vars
+        run: echo "repo_name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+
+      - name: Compute base-href
+        id: base
+        env:
+          REPO: ${{ steps.vars.outputs.repo_name }}
+        run: |
+          if [[ "$REPO" == *.github.io ]]; then
+            echo "value=/" >> $GITHUB_OUTPUT
+          else
+            echo "value=/$REPO/" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Angular app
+        run: |
+          npx ng version
+          npx ng build --configuration production --base-href "${{ steps.base.outputs.value }}"
+
+      - name: Detect dist path
+        id: distdir
+        shell: bash
+        run: |
+          if ls -d dist/*/browser >/dev/null 2>&1; then
+            echo "path=$(ls -d dist/*/browser | head -n 1)" >> $GITHUB_OUTPUT
+          elif ls -d dist/* >/dev/null 2>&1; then
+            echo "path=$(ls -d dist/* | head -n 1)" >> $GITHUB_OUTPUT
+          else
+            echo "dist directory not found" >&2
+            exit 1
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ steps.distdir.outputs.path }}
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
