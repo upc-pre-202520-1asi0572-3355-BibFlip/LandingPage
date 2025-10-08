@@ -1,6 +1,6 @@
 # Bibflip — Landing Page
 
-Landing page simple para presentar Bibflip, una solución para reservar y monitorear cubículos de estudio en tiempo real.
+Landing page para presentar Bibflip, nuestra solución para reservar y monitorear cubículos de estudio en tiempo real.
 
 ## Características
 - Secciones: Hero, ¿Qué es?, Características, Cómo usar, Testimonios, Sobre nosotros y Footer.
@@ -62,18 +62,5 @@ npm run build
 ## Despliegue (GitHub Pages con Actions)
 Este repositorio incluye un flujo en `.github/workflows/deploy.yml` que construye y publica automáticamente al hacer push a `main`.
 
-Pasos:
-1) En GitHub, ve a Settings > Pages y asegúrate de que “Source” esté en “GitHub Actions”.
-2) Haz push a `main`. El workflow compilará con el `base-href` adecuado y desplegará la carpeta `dist/` a Pages.
-3) Espera a que el job “Deploy to GitHub Pages” finalice. La página quedará disponible en:
-   - https://upc-pre-202520-1asi0572-3355-BibFlip.github.io/LandingPage/
+https://upc-pre-202520-1asi0572-3355-BibFlip.github.io/LandingPage/
 
-Notas:
-- Las rutas de imágenes y assets están configuradas en relativo para funcionar bajo `/LandingPage/`.
-- Si cambias el nombre del repositorio, la URL también cambiará; el workflow ajusta automáticamente el `base-href`.
-
-## Contribuciones
-Sugerencias y mejoras son bienvenidas. Abre un issue o un PR con tu propuesta.
-
-## Licencia
-Este proyecto se usa con fines académicos. Define una licencia antes de publicación en producción (por ejemplo, MIT).
