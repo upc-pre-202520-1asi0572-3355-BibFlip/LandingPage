@@ -28,13 +28,15 @@ export class App implements AfterViewInit, OnDestroy {
   private heroIndex = 0;
   private heroInterval?: any;
 
+  private parallaxRaf?: number;
+  private parallaxListener?: () => void;
+  private featuresImgEl?: HTMLImageElement;
+
   toggleMenu() { this.menuOpen = !this.menuOpen; }
 
   ngAfterViewInit(): void {
     this.updateTestimonioDOM();
-    this.testiInterval = setInterval(() => {
-      this.nextTestimonioGroup();
-    }, 5000);
+    this.testiInterval = setInterval(() => { this.nextTestimonioGroup(); }, 5000);
     const prevBtn = document.getElementById('testi-prev');
     const nextBtn = document.getElementById('testi-next');
     if (prevBtn) prevBtn.addEventListener('click', () => this.prevTestimonioGroup());
@@ -42,11 +44,14 @@ export class App implements AfterViewInit, OnDestroy {
     this.updateIndicators();
 
     this.initHeroBackground();
+    this.initFeaturesParallax();
   }
 
   ngOnDestroy(): void {
     if (this.testiInterval) clearInterval(this.testiInterval);
     if (this.heroInterval) clearInterval(this.heroInterval);
+    if (this.parallaxRaf) cancelAnimationFrame(this.parallaxRaf);
+    if (this.parallaxListener) this.parallaxListener();
   }
 
   private initHeroBackground() {
@@ -54,15 +59,9 @@ export class App implements AfterViewInit, OnDestroy {
     if (!heroBg || this.heroImages.length === 0) return;
 
     const preload: HTMLImageElement[] = [];
-    this.heroImages.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      preload.push(img);
-    });
+    this.heroImages.forEach((src) => { const img = new Image(); img.src = src; preload.push(img); });
 
-    const applyImage = (idx: number) => {
-      heroBg.style.backgroundImage = `url('${this.heroImages[idx]}')`;
-    };
+    const applyImage = (idx: number) => { heroBg.style.backgroundImage = `url('${this.heroImages[idx]}')`; };
 
     const first = preload[0];
     let started = false;
@@ -73,29 +72,44 @@ export class App implements AfterViewInit, OnDestroy {
       this.heroInterval = setInterval(() => {
         const next = (this.heroIndex + 1) % this.heroImages.length;
         heroBg.style.opacity = '0';
-        setTimeout(() => {
-          applyImage(next);
-          heroBg.style.opacity = '1';
-          this.heroIndex = next;
-        }, 200);
+        setTimeout(() => { applyImage(next); heroBg.style.opacity = '1'; this.heroIndex = next; }, 200);
       }, 3000);
     };
 
     if (first && !first.complete) {
-      first.onload = () => {
-        applyImage(this.heroIndex);
-        startCycle();
-      };
-      setTimeout(() => {
-        if (!started) {
-          applyImage(this.heroIndex);
-          startCycle();
-        }
-      }, 800);
+      first.onload = () => { applyImage(this.heroIndex); startCycle(); };
+      setTimeout(() => { if (!started) { applyImage(this.heroIndex); startCycle(); } }, 800);
     } else {
       applyImage(this.heroIndex);
       startCycle();
     }
+  }
+
+  private initFeaturesParallax() {
+    const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduce) return;
+    this.featuresImgEl = document.querySelector<HTMLImageElement>('.features-img') || undefined;
+    if (!this.featuresImgEl) return;
+    const section = document.getElementById('caracteristicas');
+    if (!section) return;
+    const onScroll = () => {
+      if (this.parallaxRaf) cancelAnimationFrame(this.parallaxRaf);
+      this.parallaxRaf = requestAnimationFrame(() => {
+        if (!this.featuresImgEl) return;
+        const sectionRect = section.getBoundingClientRect();
+        const viewportH = window.innerHeight;
+        const sectionCenter = sectionRect.top + sectionRect.height / 2;
+        const viewportCenter = viewportH / 2;
+        const delta = sectionCenter - viewportCenter;
+        let translate = -delta * 0.06;
+        if (translate > 60) translate = 60;
+        if (translate < -60) translate = -60;
+        this.featuresImgEl.style.transform = `translateY(${translate}px) scale(1.02)`;
+      });
+    };
+    setTimeout(onScroll, 1000);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    this.parallaxListener = () => window.removeEventListener('scroll', onScroll);
   }
 
   private updateTestimonioDOM() {
